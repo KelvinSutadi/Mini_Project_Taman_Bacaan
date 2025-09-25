@@ -20,20 +20,17 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Memilih menu dan grafik navigasi berdasarkan peran
+        // 1. Pilih dan atur "peta" navigasi berdasarkan peran
         if (userRole == "ADMIN") {
-            // Memuat peta navigasi admin
             navController.setGraph(R.navigation.nav_graph_admin)
-            // Menampilkan menu admin
-            binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu_admin)
         } else {
-            // Memuat peta navigasi user
             navController.setGraph(R.navigation.nav_graph_user)
-            // Menampilkan menu user
-            binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu_user)
         }
 
-        // Hubungkan bottom navigation dengan controller
+        // 2. Selalu gunakan SATU menu yang sama untuk keduanya
+        binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu)
+
+        // 3. Hubungkan bottom navigation dengan controller agar navigasi otomatis berfungsi
         binding.bottomNavigation.setupWithNavController(navController)
     }
 }

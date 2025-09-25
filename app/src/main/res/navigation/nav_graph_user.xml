@@ -3,16 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_user"
-    app:startDestination="@id/userHomeFragment">
+    app:startDestination="@id/navigation_books"> <!-- Tujuan awal sekarang adalah navigation_books -->
 
+    <!-- ID diubah menjadi navigation_books agar cocok dengan menu -->
     <fragment
-        android:id="@+id/userHomeFragment"
+        android:id="@+id/navigation_books"
         android:name="com.example.mini_project_taman_bacaan.UserHomeFragment"
         android:label="Daftar Buku"
         tools:layout="@layout/fragment_user_home" />
 
+    <!-- ID diubah menjadi navigation_account agar cocok dengan menu -->
     <fragment
-        android:id="@+id/accountFragment"
+        android:id="@+id/navigation_account"
         android:name="com.example.mini_project_taman_bacaan.AccountFragment"
         android:label="Akun Saya"
         tools:layout="@layout/fragment_account" />
