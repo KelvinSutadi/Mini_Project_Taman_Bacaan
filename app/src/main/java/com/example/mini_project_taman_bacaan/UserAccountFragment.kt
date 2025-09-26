@@ -25,8 +25,11 @@ class UserAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // DITAMBAHKAN: Mengambil username dari intent MainActivity
+        val username = requireActivity().intent.getStringExtra("USERNAME") ?: "Pengguna"
+        binding.accountInfoTextView.text = "Selamat Datang, $username!"
+
         binding.logoutButton.setOnClickListener {
-            // Tampilkan dialog konfirmasi
             showLogoutConfirmationDialog()
         }
     }
@@ -36,10 +39,9 @@ class UserAccountFragment : Fragment() {
             .setTitle("Konfirmasi Logout")
             .setMessage("Apakah anda yakin ingin log out?")
             .setPositiveButton("Ya") { _, _ ->
-                // Jika user menekan "Ya", jalankan logika logout
                 logout()
             }
-            .setNegativeButton("Tidak", null) // "Tidak" tidak melakukan apa-apa
+            .setNegativeButton("Tidak", null)
             .show()
     }
 

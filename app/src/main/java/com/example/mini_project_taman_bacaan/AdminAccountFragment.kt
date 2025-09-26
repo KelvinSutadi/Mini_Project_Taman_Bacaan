@@ -27,13 +27,17 @@ class AdminAccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // isi spinner role
+        // DISESUAIKAN: Mengambil username dari intent dan menampilkannya
+        val usernameFromLogin = requireActivity().intent.getStringExtra("USERNAME") ?: "Admin"
+        binding.accountInfoTextView.text = "Akun Admin: $usernameFromLogin"
+
+        // KODE ANDA: Logika untuk mengisi spinner (sudah benar)
         val roles = resources.getStringArray(R.array.user_roles)
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, roles)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.roleSpinner.adapter = adapter
 
-        // tombol tambah user
+        // KODE ANDA: Logika tombol tambah user (sudah benar)
         binding.addUserButton.setOnClickListener {
             val username = binding.newUsernameEditText.text.toString().trim()
             val password = binding.newPasswordEditText.text.toString().trim()
@@ -49,7 +53,6 @@ class AdminAccountFragment : Fragment() {
             if (success) {
                 Toast.makeText(requireContext(), "User $username berhasil ditambahkan", Toast.LENGTH_SHORT).show()
 
-                // reset form
                 binding.newUsernameEditText.text.clear()
                 binding.newPasswordEditText.text.clear()
                 binding.roleSpinner.setSelection(0)
@@ -58,7 +61,7 @@ class AdminAccountFragment : Fragment() {
             }
         }
 
-        // tombol logout
+        // KODE ANDA: Logika tombol logout (sudah benar)
         binding.logoutButton.setOnClickListener {
             showLogoutConfirmationDialog()
         }
