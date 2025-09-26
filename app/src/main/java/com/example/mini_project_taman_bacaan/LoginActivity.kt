@@ -22,13 +22,13 @@ class LoginActivity : AppCompatActivity() {
             val user = UserManager.login(username, password)
 
             if (user != null) {
-                // Jika login berhasil, pindah ke MainActivity
+                // Login berhasil → buka MainActivity
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("USER_ROLE", user.role) // Kirim peran user
+                intent.putExtra("USER_ROLE", user.role) // kirim role (admin/user)
+                intent.putExtra("USERNAME", username)    // kirim username
                 startActivity(intent)
-                finish() // Tutup LoginActivity agar tidak bisa kembali
+                finish()
             } else {
-                // Jika gagal
                 Toast.makeText(this, "Username atau password salah", Toast.LENGTH_SHORT).show()
             }
         }

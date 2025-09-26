@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mini_project_taman_bacaan.databinding.FragmentAdminBooksBinding
 
@@ -18,6 +19,9 @@ class AdminBooksFragment : Fragment() {
     private val bookViewModel: BookViewModel by viewModels()
     private lateinit var bookAdapter: BookAdapter
 
+    // Menggunakan AdminBooksFragmentArgs yang dibuat oleh Safe Args
+    private val args: AdminBooksFragmentArgs by navArgs()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentAdminBooksBinding.inflate(inflater, container, false)
         return binding.root
@@ -26,12 +30,26 @@ class AdminBooksFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Tampilkan pesan selamat datang untuk admin
+        val username = args.username
+        binding.welcomeTextView.text = "Selamat Datang, $username!"
+
         setupRecyclerView()
 
         // Amati daftar buku dan perbarui RecyclerView
         bookViewModel.books.observe(viewLifecycleOwner) { bookList ->
             bookAdapter = BookAdapter(bookList)
             binding.booksRecyclerView.adapter = bookAdapter
+        }
+
+        bookViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.loadingIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        bookViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
+            if (errorMessage != null) {
+                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+            }
         }
 
         // Atur listener untuk tombol tambah buku

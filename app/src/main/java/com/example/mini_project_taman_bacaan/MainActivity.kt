@@ -15,22 +15,29 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userRole = intent.getStringExtra("USER_ROLE")
+        // Ambil data dari LoginActivity
+        val userRole = intent.getStringExtra("USER_ROLE") ?: "USER"
+        val username = intent.getStringExtra("USERNAME") ?: "Guest"
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        // 1. Pilih dan atur "peta" navigasi berdasarkan peran
-        if (userRole == "ADMIN") {
-            navController.setGraph(R.navigation.nav_graph_admin)
-        } else {
-            navController.setGraph(R.navigation.nav_graph_user)
+        // Siapkan bundle untuk kirim username ke fragment awal
+        val bundle = Bundle().apply {
+            putString("username", username)
         }
 
-        // 2. Selalu gunakan SATU menu yang sama untuk keduanya
-        binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu)
+        // Ambil NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        // 3. Hubungkan bottom navigation dengan controller agar navigasi otomatis berfungsi
+        // Pilih graph sesuai role
+        if (userRole.equals("ADMIN", ignoreCase = true)) {
+            navController.setGraph(R.navigation.nav_graph_admin, bundle)
+        } else {
+            navController.setGraph(R.navigation.nav_graph_user, bundle)
+        }
+
+        // Setup BottomNavigation dengan NavController
+        binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu)
         binding.bottomNavigation.setupWithNavController(navController)
     }
 }

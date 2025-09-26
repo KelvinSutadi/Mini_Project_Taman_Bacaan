@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -34,7 +35,6 @@ android {
         jvmTarget = "11"
     }
 
-    // TAMBAHKAN BLOK INI UNTUK MENGAKTIFKAN VIEW BINDING
     buildFeatures {
         viewBinding = true
     }
