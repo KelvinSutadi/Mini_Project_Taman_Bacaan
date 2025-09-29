@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +17,8 @@ import com.bumptech.glide.Glide
 import com.example.mini_project_taman_bacaan.databinding.FragmentAdminBooksBinding
 
 class AdminBooksFragment : Fragment() {
-
     private var _binding: FragmentAdminBooksBinding? = null
     private val binding get() = _binding!!
-
     private val bookViewModel: BookViewModel by viewModels()
     private lateinit var bookAdapter: BookAdapter
     private val args: AdminBooksFragmentArgs by navArgs()
@@ -31,10 +30,8 @@ class AdminBooksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val username = args.username
         binding.welcomeTextView.text = "Selamat Datang, $username!"
-
         setupRecyclerView()
 
         bookViewModel.books.observe(viewLifecycleOwner) { bookList ->
@@ -43,17 +40,14 @@ class AdminBooksFragment : Fragment() {
             }
             binding.booksRecyclerView.adapter = bookAdapter
         }
-
         bookViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.loadingIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
-
         bookViewModel.error.observe(viewLifecycleOwner) { errorMessage ->
             if (errorMessage != null) {
                 Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
-
         binding.addBookButton.setOnClickListener {
             addBook()
         }
@@ -67,27 +61,23 @@ class AdminBooksFragment : Fragment() {
 
     private fun showBookDetailDialog(book: Book) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_book_detail, null)
-        val builder = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setPositiveButton("Tutup", null)
-
+        val builder = AlertDialog.Builder(requireContext()).setView(dialogView).setPositiveButton("Tutup", null)
         val dialog = builder.create()
         dialog.show()
-
+        dialogView.findViewById<View>(R.id.borrowButton).visibility = View.GONE
         val cover: ImageView = dialogView.findViewById(R.id.dialogCoverImageView)
         val title: TextView = dialogView.findViewById(R.id.dialogTitleTextView)
         val author: TextView = dialogView.findViewById(R.id.dialogAuthorTextView)
         val publisher: TextView = dialogView.findViewById(R.id.dialogPublisherTextView)
         val description: TextView = dialogView.findViewById(R.id.dialogDescriptionTextView)
-
+        val status: TextView = dialogView.findViewById(R.id.dialogStatusTextView)
         title.text = book.title
         author.text = "oleh ${book.author}"
         publisher.text = "${book.publisher} (${book.publicationYear})"
         description.text = book.description
-
-        Glide.with(this)
-            .load(book.coverUrl)
-            .into(cover)
+        status.text = "Stok saat ini: ${book.stock}"
+        status.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.black))
+        Glide.with(this).load(book.coverUrl).placeholder(R.drawable.loading_animation).error(R.drawable.ic_broken_image).into(cover)
     }
 
     private fun addBook() {
@@ -95,11 +85,12 @@ class AdminBooksFragment : Fragment() {
         val author = binding.addAuthorEditText.text.toString().trim()
         val publisher = binding.addPublisherEditText.text.toString().trim()
         val year = binding.addYearEditText.text.toString().toIntOrNull() ?: 0
+        val stock = binding.addStockEditText.text.toString().toIntOrNull() ?: 0
         val coverUrl = binding.addCoverUrlEditText.text.toString().trim()
         val description = binding.addDescEditText.text.toString().trim()
 
         if (title.isNotEmpty() && author.isNotEmpty()) {
-            val newBook = Book(title, description, coverUrl, author, publisher, year)
+            val newBook = Book(title = title, description = description, coverUrl = coverUrl, author = author, publisher = publisher, publicationYear = year, stock = stock)
             BookManager.addBook(newBook)
             Toast.makeText(context, "Buku berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             clearForm()
@@ -113,6 +104,7 @@ class AdminBooksFragment : Fragment() {
         binding.addAuthorEditText.text.clear()
         binding.addPublisherEditText.text.clear()
         binding.addYearEditText.text.clear()
+        binding.addStockEditText.text.clear()
         binding.addCoverUrlEditText.text.clear()
         binding.addDescEditText.text.clear()
     }

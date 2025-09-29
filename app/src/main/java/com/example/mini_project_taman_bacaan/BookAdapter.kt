@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 
 class BookAdapter(
     private var books: List<Book>,
-    // DITAMBAHKAN: Sebuah "listener" untuk menangani klik
     private val onBookClicked: (Book) -> Unit
 ) : RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
 
@@ -36,7 +35,6 @@ class BookAdapter(
             .error(R.drawable.ic_broken_image)
             .into(holder.coverImageView)
 
-        // DITAMBAHKAN: Membuat seluruh item bisa diklik
         holder.itemView.setOnClickListener {
             onBookClicked(book)
         }

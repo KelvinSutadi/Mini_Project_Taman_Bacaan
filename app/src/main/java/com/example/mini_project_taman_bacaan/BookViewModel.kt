@@ -7,12 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class BookViewModel : ViewModel() {
-
-
     val books: LiveData<List<Book>> = BookManager.booksLiveData
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
@@ -28,7 +25,6 @@ class BookViewModel : ViewModel() {
                     val bookListFromApi = Api.retrofitService.getBooks()
                     BookManager.setInitialBooks(bookListFromApi)
                     _error.value = null
-
                 } catch (e: Exception) {
                     _error.value = "Gagal memuat data dari internet: ${e.message}"
                 } finally {

@@ -9,11 +9,11 @@
         android:id="@+id/navigation_books"
         android:name="com.example.mini_project_taman_bacaan.AdminBooksFragment"
         android:label="Manajemen Buku"
-        tools:layout="@layout/fragment_admin_books">
-
+        tools:layout="@layout/fragment_admin_books" >
         <argument
             android:name="username"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="Admin" />
     </fragment>
 
     <fragment

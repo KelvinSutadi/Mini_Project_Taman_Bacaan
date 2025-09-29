@@ -3,7 +3,7 @@
     <item
         android:id="@+id/navigation_books"
         android:icon="@drawable/ic_book"
-        android:title="Daftar Buku" />
+        android:title="Buku" />
     <item
         android:id="@+id/navigation_account"
         android:icon="@drawable/ic_account"

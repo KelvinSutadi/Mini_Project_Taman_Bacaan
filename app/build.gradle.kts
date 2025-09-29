@@ -41,10 +41,13 @@ android {
 }
 
 dependencies {
+    //Retrofit & Moshi
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.13.0")
+    //Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    //View Model & Navigation
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")

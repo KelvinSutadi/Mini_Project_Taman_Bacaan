@@ -9,12 +9,11 @@
         android:id="@+id/navigation_books"
         android:name="com.example.mini_project_taman_bacaan.UserHomeFragment"
         android:label="Daftar Buku"
-        tools:layout="@layout/fragment_user_home">
-
-
+        tools:layout="@layout/fragment_user_home" >
         <argument
             android:name="username"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue="User" />
     </fragment>
 
     <fragment

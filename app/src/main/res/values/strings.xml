@@ -1,11 +1,8 @@
 <resources>
-    <string name="app_name">Mini_Project_Taman_Bacaan</string>
+    <string name="app_name">Taman Bacaan</string>
     <string name="book_cover_image">Gambar sampul buku</string>
-
-    <!-- TAMBAHKAN KODE INI -->
     <string-array name="user_roles">
         <item>USER</item>
         <item>ADMIN</item>
     </string-array>
-
 </resources>

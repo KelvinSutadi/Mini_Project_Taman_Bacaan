@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/itemCoverImageView"
-        android:layout_width="80dp"
-        android:layout_height="120dp"
-        android:scaleType="centerCrop"
-        tools:src="@tools:sample/avatars" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
         android:layout_weight="1"
         android:orientation="vertical">
-
         <TextView
-            android:id="@+id/itemTitleTextView"
+            android:id="@+id/borrowedTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            tools:text="Judul Buku" />
-
+            android:text="Judul Buku"
+            android:textStyle="bold"/>
         <TextView
-            android:id="@+id/itemAuthorTextView"
+            android:id="@+id/borrowedAuthorTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="italic"
-            tools:text="Penulis" />
+            android:text="Penulis"/>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kembalikan"/>
 </LinearLayout>

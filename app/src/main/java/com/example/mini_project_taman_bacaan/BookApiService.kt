@@ -3,6 +3,6 @@ package com.example.mini_project_taman_bacaan
 import retrofit2.http.GET
 
 interface BookApiService {
-    @GET("/v1/8d91e733-f379-4ebd-b135-6d6e19d1d8fb")
+    @GET("/v1/2133c2b4-129a-4e5f-bf78-0f9fc33fb951")
     suspend fun getBooks(): List<Book>
 }

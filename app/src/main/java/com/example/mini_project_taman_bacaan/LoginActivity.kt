@@ -1,3 +1,4 @@
+// com/example/mini_project_taman_bacaan/LoginActivity.kt
 package com.example.mini_project_taman_bacaan
 
 import android.content.Intent
@@ -7,7 +8,6 @@ import android.widget.Toast
 import com.example.mini_project_taman_bacaan.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,14 +18,12 @@ class LoginActivity : AppCompatActivity() {
         binding.loginButton.setOnClickListener {
             val username = binding.usernameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-
             val user = UserManager.login(username, password)
 
             if (user != null) {
-                // Login berhasil → buka MainActivity
                 val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("USER_ROLE", user.role) // kirim role (admin/user)
-                intent.putExtra("USERNAME", username)    // kirim username
+                intent.putExtra("USER_ROLE", user.role)
+                intent.putExtra("USERNAME", user.username)
                 startActivity(intent)
                 finish()
             } else {
