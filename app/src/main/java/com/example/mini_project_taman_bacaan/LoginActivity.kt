@@ -1,4 +1,3 @@
-// com/example/mini_project_taman_bacaan/LoginActivity.kt
 package com.example.mini_project_taman_bacaan
 
 import android.content.Intent

@@ -1,4 +1,3 @@
-// com/example/mini_project_taman_bacaan/Book.kt
 package com.example.mini_project_taman_bacaan
 
 import com.squareup.moshi.Json
