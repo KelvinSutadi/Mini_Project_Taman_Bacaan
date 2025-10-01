@@ -1,3 +1,4 @@
+// com/example/mini_project_taman_bacaan/AdminBooksFragment.kt
 package com.example.mini_project_taman_bacaan
 
 import android.os.Bundle
@@ -5,11 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +19,10 @@ import com.bumptech.glide.Glide
 import com.example.mini_project_taman_bacaan.databinding.FragmentAdminBooksBinding
 
 class AdminBooksFragment : Fragment() {
+
     private var _binding: FragmentAdminBooksBinding? = null
     private val binding get() = _binding!!
+
     private val bookViewModel: BookViewModel by viewModels()
     private lateinit var bookAdapter: BookAdapter
     private val args: AdminBooksFragmentArgs by navArgs()
@@ -40,6 +44,7 @@ class AdminBooksFragment : Fragment() {
             }
             binding.booksRecyclerView.adapter = bookAdapter
         }
+
         bookViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.loadingIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
@@ -61,23 +66,60 @@ class AdminBooksFragment : Fragment() {
 
     private fun showBookDetailDialog(book: Book) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_book_detail, null)
-        val builder = AlertDialog.Builder(requireContext()).setView(dialogView).setPositiveButton("Tutup", null)
-        val dialog = builder.create()
-        dialog.show()
-        dialogView.findViewById<View>(R.id.borrowButton).visibility = View.GONE
+        val mainDialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
+
         val cover: ImageView = dialogView.findViewById(R.id.dialogCoverImageView)
         val title: TextView = dialogView.findViewById(R.id.dialogTitleTextView)
         val author: TextView = dialogView.findViewById(R.id.dialogAuthorTextView)
         val publisher: TextView = dialogView.findViewById(R.id.dialogPublisherTextView)
         val description: TextView = dialogView.findViewById(R.id.dialogDescriptionTextView)
         val status: TextView = dialogView.findViewById(R.id.dialogStatusTextView)
+
+        // Sembunyikan tombol pinjam untuk admin
+        dialogView.findViewById<View>(R.id.borrowButton).visibility = View.GONE
+
+        // Tampilkan tombol ubah stok untuk admin
+        val updateStockButton: Button = dialogView.findViewById(R.id.updateStockButton)
+        updateStockButton.visibility = View.VISIBLE
+
         title.text = book.title
         author.text = "oleh ${book.author}"
         publisher.text = "${book.publisher} (${book.publicationYear})"
         description.text = book.description
-        status.text = "Stok saat ini: ${book.stock}"
-        status.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.black))
-        Glide.with(this).load(book.coverUrl).placeholder(R.drawable.loading_animation).error(R.drawable.ic_broken_image).into(cover)
+        status.text = "Stok Saat Ini: ${book.stock}"
+
+        Glide.with(this).load(book.coverUrl).into(cover)
+
+        updateStockButton.setOnClickListener {
+            mainDialog.dismiss() // Tutup dialog detail
+            showUpdateStockDialog(book) // Buka dialog baru untuk ubah stok
+        }
+
+        mainDialog.show()
+    }
+
+    // FUNGSI BARU: Menampilkan dialog kedua untuk input stok
+    private fun showUpdateStockDialog(book: Book) {
+        val updateDialogView = LayoutInflater.from(context).inflate(R.layout.dialog_update_stock, null)
+        val newStockEditText: EditText = updateDialogView.findViewById(R.id.newStockEditText)
+        newStockEditText.setText(book.stock.toString()) // Isi dengan stok saat ini
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Ubah Stok untuk '${book.title}'")
+            .setView(updateDialogView)
+            .setPositiveButton("OK") { _, _ ->
+                val newStockString = newStockEditText.text.toString()
+                val newStock = newStockString.toIntOrNull()
+
+                if (newStock != null && newStock >= 0) {
+                    BookManager.setStock(book.id, newStock)
+                    Toast.makeText(context, "Stok berhasil diperbarui menjadi $newStock", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Jumlah stok tidak valid", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Batal", null)
+            .show()
     }
 
     private fun addBook() {

@@ -1,3 +1,4 @@
+// com/example/mini_project_taman_bacaan/BookManager.kt
 package com.example.mini_project_taman_bacaan
 
 import androidx.lifecycle.MutableLiveData
@@ -32,6 +33,17 @@ object BookManager {
         book?.let {
             it.stock++
             booksLiveData.value = currentList
+        }
+    }
+
+    fun setStock(bookId: String, newStock: Int) {
+        val currentList = booksLiveData.value?.toMutableList() ?: return
+        val book = currentList.find { it.id == bookId }
+        book?.let {
+            if (newStock >= 0) {
+                it.stock = newStock
+                booksLiveData.value = currentList
+            }
         }
     }
 }
