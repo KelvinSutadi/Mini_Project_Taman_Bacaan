@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mini_project_taman_bacaan.databinding.FragmentUserAccountBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class UserAccountFragment : Fragment() {
 
@@ -73,8 +75,12 @@ class UserAccountFragment : Fragment() {
             .show()
     }
 
+    // DIUBAH: Fungsi logout sekarang mengirim "pesan khusus"
     private fun logout() {
+        Firebase.auth.signOut()
         val intent = Intent(activity, LoginActivity::class.java)
+        // DITAMBAHKAN: Pesan khusus untuk memberitahu LoginActivity agar tidak auto-login
+        intent.putExtra("IS_LOGGED_OUT", true)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         requireActivity().finish()

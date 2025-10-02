@@ -22,10 +22,8 @@ class LoginActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        val currentUser = auth.currentUser
-        if (currentUser != null) {
-            fetchUserRoleAndProceed(currentUser.uid, currentUser.email ?: "")
-        }
+        // BLOK KODE UNTUK LOGIN OTOMATIS TELAH DIHAPUS DARI SINI.
+        // Sekarang, layar ini akan selalu menunggu input dari pengguna.
 
         binding.loginButton.setOnClickListener {
             val email = binding.usernameEditText.text.toString().trim()
@@ -49,7 +47,6 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
 
-        // DITAMBAHKAN: Listener untuk teks registrasi
         binding.registerTextView.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
@@ -57,8 +54,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun fetchUserRoleAndProceed(userId: String, email: String) {
-        val db = Firebase.firestore
-        db.collection("users").document(userId).get()
+        Firebase.firestore.collection("users").document(userId).get()
             .addOnSuccessListener { document ->
                 var role = "USER"
                 if (document != null && document.exists()) {
